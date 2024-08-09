@@ -1,0 +1,30 @@
+﻿@page "/Overview"
+@rendermode InteractiveServer
+
+<PageTitle>Overview</PageTitle>
+<ul class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2 list-unstyled">
+    
+    @foreach (var product in Products)
+{
+    <li class="col mb-4 ">
+        <Item Name="@product.Name" Description="@product.Description" Price="@product.Price"/>
+    </li>
+}
+</ul>
+
+@code {
+
+    public List<Item> Products { get; set; } =
+    [
+        new Item { Name = "T-Shirt", Description = "A simple T-Shirt", Price = 10 },
+        new Item { Name = "Pants", Description = "A simple pair of pants", Price = 20 },
+        new Item { Name = "Shoes", Description = "A simple pair of shoes", Price = 30 },
+        new Item { Name = "Hat", Description = "A simple hat", Price = 5 },
+        new Item { Name = "Socks", Description = "A simple pair of socks", Price = 2 },
+        new Item { Name = "Gloves", Description = "A simple pair of gloves", Price = 3 },
+        new Item { Name = "Scarf", Description = "A simple scarf", Price = 7 },
+        new Item { Name = "Jacket", Description = "A simple jacket", Price = 40 },
+        new Item { Name = "Dress", Description = "A simple dress", Price = 25 }
+    ];
+
+}
