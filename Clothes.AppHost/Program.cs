@@ -2,5 +2,8 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Clothes_WebApp>("WebApp");
+var api= builder.AddProject<Clothes_Api>("WebApi");
+builder.AddProject<Clothes_WebApp>("WebApp")
+    .WithReference(api);
+
 builder.Build().Run();

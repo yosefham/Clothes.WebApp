@@ -1,10 +1,25 @@
 using Clothes.WebApp.Components;
+using Clothes.WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddServiceDiscovery();
+
+builder.Services.ConfigureHttpClientDefaults(http =>
+{
+    // Turn on resilience by default
+    // http.AddStandardResilienceHandler();
+
+    // Turn on service discovery by default
+    http.AddServiceDiscovery();
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpClient<IItemsProviderService, ItemsProviderService>(c => c.BaseAddress = new Uri("https+http://WebApi"));
 
 var app = builder.Build();
 

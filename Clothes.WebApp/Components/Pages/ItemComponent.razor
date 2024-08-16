@@ -1,0 +1,15 @@
+﻿@using Clothes.Api.Models
+
+
+<div>
+    <img src="@Item.ImageUrls?[0]" alt="Image" class="col-auto" />
+    <h4>@Item.Title</h4>
+    <p>@Item.Price €</p>
+    <p>@Item.Description</p>
+</div>
+
+
+@code {
+    [Parameter] public Item Item { get; set; }
+
+}

@@ -1,31 +1,37 @@
 ﻿@page "/Overview"
+@using Clothes.Api.Models
+@using Clothes.WebApp.Services
+@inject IItemsProviderService ItemsProviderService
 @rendermode InteractiveServer
 
 <PageTitle>Overview</PageTitle>
-<ul class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2 list-unstyled">
-    
-    @foreach (var product in Products)
+@if(Products?.Any() is not true )
 {
-    <li class="col mb-4 ">
-        <Item Name="@product.Name" Description="@product.Description" Price="@product.Price"/>
-    </li>
+    <p>Loading...</p>
 }
-</ul>
+else
+{
+    <ul class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2 list-unstyled">
+        @foreach (var product in Products)
+        {
+            <li class="col mb-4 ">
+                <ItemComponent Item="@product"/>
+            </li>
+        }
+    </ul>
+}
 
 @code {
-
-    
-    public List<Item> Products { get; set; } =
-    [
-        new Item { Image = "test",  Name = "T-Shirt", Description = "A simple T-Shirt", Price = 10 },
-        new Item { Image = "test",  Name = "Pants", Description = "A simple pair of pants", Price = 20 },
-        new Item { Image = "test",  Name = "Shoes", Description = "A simple pair of shoes", Price = 30 },
-        new Item { Image = "test",  Name = "Hat", Description = "A simple hat", Price = 5 },
-        new Item { Image = "test",  Name = "Socks", Description = "A simple pair of socks", Price = 2 },
-        new Item { Image = "test",  Name = "Gloves", Description = "A simple pair of gloves", Price = 3 },
-        new Item { Image = "test",  Name = "Scarf", Description = "A simple scarf", Price = 7 },
-        new Item { Image = "test",  Name = "Jacket", Description = "A simple jacket", Price = 40 },
-        new Item { Image = "test",  Name = "Dress", Description = "A simple dress", Price = 25 }
-    ];
+     private List<Item> Products { get; set; } = [];
+     private readonly FilterResource _filterResource = new();
+    protected override async Task OnInitializedAsync()
+    {
+        _filterResource.Id = Guid.NewGuid().ToString();
+        _filterResource.MinPrice = 0;
+        _filterResource.MaxPrice = Decimal.MaxValue;
+        
+        var products = await ItemsProviderService.GetItems(_filterResource);
+        Products = products is null ? [] : products.ToList();
+    }  
 
 }
