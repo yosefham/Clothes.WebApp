@@ -1,0 +1,20 @@
+﻿@using Clothes.Api.Models
+@inject NavigationManager NavigationManager
+
+<div class="breadcrumb-item">
+    <img @onclick="RedirectToItem(Item.Id)" src="@Item.ImageUrls?[0]" alt="Image" class="col-auto item-Image"/>
+    <h4>@Item.Title</h4>
+    <p>@Item.Price €</p>
+    <p>@Item.Description</p>
+</div>
+
+
+@code {
+    [Parameter] public Item Item { get; set; }
+
+    private EventCallback RedirectToItem(string itemId)
+    {
+        return EventCallback.Factory.Create(this, () => NavigationManager.NavigateTo($"/item/{itemId}"));
+    }
+
+}

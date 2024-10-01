@@ -1,6 +1,7 @@
 ﻿@page "/Overview"
 @using Clothes.Api.Models
 @using Clothes.WebApp.Services
+@using Clothes.WebApp.Components.Components
 @inject IItemsProviderService ItemsProviderService
 @rendermode InteractiveServer
 
@@ -22,7 +23,7 @@ else
 }
 
 @code {
-     private List<Item> Products { get; set; } = [];
+     private List<Clothes.Api.Models.Item> Products { get; set; } = [];
      private readonly FilterResource _filterResource = new();
     protected override async Task OnInitializedAsync()
     {

@@ -6,6 +6,8 @@ namespace Clothes.Api.Services;
 public interface IItemProvider
 {
     Task<IEnumerable<Item>> GetItems(FilterResource filter);
+    Task<Item?> GetItem(string id);
+    Task<bool> BuyItem(string id);
 }
 
 public class ItemProvider(
@@ -22,4 +24,23 @@ public class ItemProvider(
         
         return await itemRepository.GetItems(filter);
     }
+
+    public Task<Item?> GetItem(string id)
+    {
+        return itemRepository.GetItem(id);
+    }
+
+    public async Task<bool> BuyItem(string id)
+    {
+        var item = await itemRepository.GetItem(id);
+        if(item is not null)
+        {
+            logger.LogInformation("Item bought: {ItemId}", id);
+            return true;
+        }
+
+        logger.LogWarning("Item not found: {ItemId}", id);
+        return false;
+    }
+    
 }

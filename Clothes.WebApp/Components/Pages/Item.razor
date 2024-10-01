@@ -1,0 +1,50 @@
+﻿@page "/Item/{Id}"
+@using Clothes.WebApp.Services
+@inject NavigationManager NavigationManager
+@inject IItemsProviderService ItemsProviderService
+@rendermode InteractiveServer
+
+@if (ItemField is not null)
+{
+    <PageTitle>@ItemField.Title</PageTitle>
+    <div class="row">
+        <div class="col-lg-7">
+            <img src="@ItemField.ImageUrls?[0]" alt="Image" class="col-auto item-Image"/>
+        </div>
+        <div class="col-lg-5">
+            <h4>@ItemField.Title</h4>
+            <p>@ItemField.Price €</p>
+            <button class="btn btn-primary" @onclick="BuyNow">Buy Again!</button>
+            <p>@ItemField.Description</p>
+        </div>
+    </div>
+
+}
+else
+{
+    <p>Loading...</p>
+}
+
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = null!;
+
+    private Api.Models.Item? ItemField { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var item = await ItemsProviderService.GetItem(Id);
+
+        ItemField = item ?? throw new Exception("Item not found");
+    }
+
+    private async Task BuyNow()
+    {
+        var buyNow = await ItemsProviderService.BuyNow(ItemField!.Id);
+        if (buyNow)
+            NavigationManager.NavigateTo("/Overview");
+    }
+
+}
