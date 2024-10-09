@@ -11,17 +11,17 @@ public interface IItemProvider
 }
 
 public class ItemProvider(
-    IItemRepository itemRepository,
-    IValidator<FilterResource> validator,
-    ILogger<ItemProvider> logger)
+        IItemRepository itemRepository,
+        IValidator<FilterResource> validator,
+        ILogger<ItemProvider> logger)
     : IItemProvider
 {
     public async Task<IEnumerable<Item>> GetItems(FilterResource filter)
     {
         var validationResult = await validator.ValidateAsync(filter);
-        if(validationResult.IsValid == false)
+        if (validationResult.IsValid == false)
             logger.LogError("Invalid filter: {Filter}", validationResult.Errors);
-        
+
         return await itemRepository.GetItems(filter);
     }
 
@@ -33,7 +33,7 @@ public class ItemProvider(
     public async Task<bool> BuyItem(string id)
     {
         var item = await itemRepository.GetItem(id);
-        if(item is not null)
+        if (item is not null)
         {
             logger.LogInformation("Item bought: {ItemId}", id);
             return true;
@@ -42,5 +42,5 @@ public class ItemProvider(
         logger.LogWarning("Item not found: {ItemId}", id);
         return false;
     }
-    
+
 }

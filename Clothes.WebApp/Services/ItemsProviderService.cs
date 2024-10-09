@@ -12,23 +12,23 @@ public interface IItemsProviderService
 
 internal class ItemsProviderService(HttpClient client) : IItemsProviderService
 {
-    
+
     public async Task<IEnumerable<Item>?> GetItems(FilterResource filter)
     {
         var response = await client.PostAsJsonAsync("items", filter);
-        if(response.StatusCode != HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK)
             throw new Exception("Failed to get items");
-        
+
         return await response.Content.ReadFromJsonAsync<IEnumerable<Item>>();
     }
 
     public async Task<Item?> GetItem(string id)
     {
-       var response = await client.GetAsync($"item/{id}"); 
-         if(response.StatusCode != HttpStatusCode.OK)
-              throw new Exception("Failed to get item");
-         
-         return await response.Content.ReadFromJsonAsync<Item>();
+        var response = await client.GetAsync($"item/{id}");
+        if (response.StatusCode != HttpStatusCode.OK)
+            throw new Exception("Failed to get item");
+
+        return await response.Content.ReadFromJsonAsync<Item>();
     }
 
     public async Task<bool> BuyNow(string itemFieldId)
