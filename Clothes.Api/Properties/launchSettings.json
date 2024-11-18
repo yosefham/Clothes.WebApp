@@ -9,11 +9,11 @@
     }
   },
   "profiles": {
-    "https": {
+    "Clothes.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "Scalar/v1",
       "applicationUrl": "https://localhost:7214;http://localhost:5097",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -11,7 +11,6 @@ public class ItemController(IItemProvider itemProvider) : ControllerBase
     [HttpPost("items")]
     [ProducesResponseType(typeof(IEnumerable<Item>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetItems([FromBody] FilterResource filter)
-
     {
         var items = await itemProvider.GetItems(filter);
         return Ok(items);
